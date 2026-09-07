@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git - úlohy na školenie</title>
+  <style>
+    :root {
+      --text: #172033;
+      --muted: #5c6675;
+      --line: #d7dde7;
+      --bg: #ffffff;
+      --soft: #f6f8fb;
+      --accent: #1d4ed8;
+      --solution: #eef7f3;
+      --solution-line: #0f766e;
+      --code-bg: #101827;
+      --code-text: #edf2f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .wrap {
+      width: min(1040px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .top {
+      padding: 26px 0 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 0 18px;
+    }
+
+    .bar a,
+    .bar button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      background: #ffffff;
+      text-decoration: none;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .bar button {
+      color: #ffffff;
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    main {
+      padding: 28px 0 46px;
+    }
+
+    .day {
+      margin-bottom: 44px;
+    }
+
+    .day-head {
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--text);
+    }
+
+    h2 {
+      margin: 0 0 4px;
+      font-size: 27px;
+      letter-spacing: 0;
+    }
+
+    .day-head p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .task {
+      margin: 0 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .task h3 {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 20px;
+      line-height: 1.3;
+      letter-spacing: 0;
+      background: var(--soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .task-body {
+      padding: 14px 16px 16px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--soft);
+      white-space: nowrap;
+    }
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    ol,
+    ul {
+      margin: 0 0 10px;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 0 0 6px;
+    }
+
+    code {
+      padding: 1px 4px;
+      border: 1px solid #dbe3ee;
+      border-radius: 4px;
+      color: #0f172a;
+      background: #eef2f7;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      margin: 8px 0 0;
+      padding: 11px;
+      overflow-x: auto;
+      color: var(--code-text);
+      background: var(--code-bg);
+      border-radius: 6px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    pre code {
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+    }
+
+    details {
+      margin-top: 12px;
+      border: 1px solid #bbded2;
+      border-left: 5px solid var(--solution-line);
+      border-radius: 7px;
+      background: var(--solution);
+    }
+
+    summary {
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .solution {
+      padding: 0 12px 12px;
+    }
+
+    footer {
+      padding: 18px 0 26px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    @media print {
+      .bar button {
+        display: none;
+      }
+
+      .task {
+        break-inside: avoid;
+      }
+
+      .day {
+        break-after: page;
+      }
+
+      .day:last-child {
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap top">
+      <h1>Git - praktické úlohy</h1>
+      <p class="lead">Zadania sú rozdelené na dva dni. Každá úloha je približne na 20 minút samostatného skúšania. Riešenie je skryté pod úlohou a dá sa odkryť až po práci.</p>
+    </div>
+    <div class="wrap bar">
+      <a href="#den-1">Deň 1</a>
+      <a href="#den-2">Deň 2</a>
+      <button type="button" id="show-solutions">Odkryť riešenia</button>
+      <button type="button" id="hide-solutions">Skryť riešenia</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="day" id="den-1">
+      <div class="day-head">
+        <h2>Deň 1 - slidy 1 až 44</h2>
+        <p>Version control, inštalácia, repository, commit, staging area, diff, .gitignore, HEAD, reset a revert.</p>
+      </div>
+
+      <article class="task">
+        <h3>1. Ručné verzie súboru</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">version control</span></p>
+          <p>Vytvorte si priečinok <code>bez-gitu</code> a v ňom textový súbor <code>navrh.txt</code>. Napíšte doň krátky opis malej aplikácie alebo webu. Potom vytvorte tri kópie súboru s rôznymi názvami, napríklad <code>navrh-final.txt</code>, <code>navrh-final2.txt</code> a <code>navrh-oprava.txt</code>. Do každej verzie urobte malú zmenu.</p>
+          <p>Vašou úlohou je zistiť, ktorá verzia je najnovšia, čo sa v nej zmenilo a prečo by bol tento spôsob pri reálnom projekte problém.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <p>Podľa názvov súborov sa história spravuje zle. Chýba presný čas zmeny, autor, dôvod zmeny a spoľahlivý diff medzi verziami. Git tento problém rieši cez commity, ktoré ukladajú konkrétny stav projektu spolu s metadata.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>2. Overenie Gitu a základná konfigurácia</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">git config</span></p>
+          <p>Otvorte terminál alebo Git Bash. Overte, či máte nainštalovaný Git, a nastavte meno a e-mail, ktoré sa budú zapisovať do commitov.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git --version
+git config --global user.name "Meno Priezvisko"
+git config --global user.email "meno@example.com"
+git config --global --list</code></pre>
+              <p>Vo výstupe má byť vidieť <code>user.name</code> a <code>user.email</code>. Tieto údaje sa ukladajú do commit metadata.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>3. Vytvorenie prvého repository</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">git init</span></p>
+          <p>Vytvorte nové repository s názvom <code>git-den1</code>. V ňom vytvorte súbor <code>README.md</code>, napíšte doň nadpis a krátky opis projektu. Potom spravte prvý commit.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git init git-den1
+cd git-den1
+git status</code></pre>
+              <p>Vytvorte alebo upravte <code>README.md</code>, potom:</p>
+              <pre><code>git add README.md
+git commit -m "Add README"
+git log --oneline
+git status</code></pre>
+              <p><code>git log --oneline</code> má ukázať jeden commit a <code>git status</code> má hlásiť čistý working tree.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>4. Staging area: commit iba vybraného súboru</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">staging area</span></p>
+          <p>V repository vytvorte dva súbory: <code>plan.txt</code> a <code>poznamky.txt</code>. Do oboch napíšte nejaký text. Prvý commit má obsahovať iba <code>plan.txt</code>. Druhý commit má obsahovať <code>poznamky.txt</code>.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git status
+git add plan.txt
+git status
+git commit -m "Add plan"
+git add poznamky.txt
+git commit -m "Add notes"
+git log --oneline</code></pre>
+              <p>Commit berie obsah zo staging area. To, čo nie je staged, do commitu nejde.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>5. Upravený súbor bez git add</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">commit</span></p>
+          <p>Upravte <code>README.md</code>. Skúste hneď spraviť commit bez <code>git add</code>. Prečítajte si výstup Gitu a potom postup opravte.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git status
+git commit -m "Update README"</code></pre>
+              <p>Git pravdepodobne oznámi, že nie je čo commitnúť, pretože zmena je iba vo working directory.</p>
+              <pre><code>git add README.md
+git commit -m "Update README"
+git status</code></pre>
+              <p>Po <code>git add</code> je zmena v staging area a commit prejde.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>6. Porovnanie git diff a git diff --staged</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">diff</span></p>
+          <p>Upravte existujúci súbor. Najprv si zmenu pozrite cez <code>git diff</code>. Potom ju dajte do staging area a porovnajte výstup <code>git diff</code> a <code>git diff --staged</code>.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git diff
+git add README.md
+git diff
+git diff --staged
+git commit -m "Update README text"</code></pre>
+              <p><code>git diff</code> bez argumentov ukazuje rozdiel medzi working directory a staging area. Po <code>git add</code> môže byť prázdny. <code>git diff --staged</code> ukazuje staged zmeny oproti poslednému commitu.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>7. Ignorovanie súborov cez .gitignore</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">.gitignore</span></p>
+          <p>Vytvorte súbor <code>debug.log</code> a priečinok <code>build</code>. Nastavte repository tak, aby Git tieto súbory neponúkal na commit.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <p>Do súboru <code>.gitignore</code> vložte:</p>
+              <pre><code>build/
+*.log</code></pre>
+              <p>Potom:</p>
+              <pre><code>git status
+git add .gitignore
+git commit -m "Add gitignore"
+git status</code></pre>
+              <p><code>debug.log</code> a <code>build/</code> by sa už nemali zobrazovať ako untracked files.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>8. Zahodenie necommitnutej zmeny</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">restore</span></p>
+          <p>Upravte <code>README.md</code> tak, že doň pridáte zámerne zlý text. Pozrite si diff a potom zmenu zahoďte tak, aby sa súbor vrátil do stavu posledného commitu.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git diff
+git restore README.md
+git status</code></pre>
+              <p>Starší zápis je:</p>
+              <pre><code>git checkout -- README.md</code></pre>
+              <p>Pred zahodením zmeny je dobré vždy spustiť <code>git diff</code>, lebo necommitnutá zmena sa po zahodení nemusí dať jednoducho obnoviť.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>9. Vybratie súboru zo staging area</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">reset</span></p>
+          <p>Upravte dva súbory a pridajte oba cez <code>git add .</code>. Potom jeden súbor vyberte zo staging area tak, aby jeho obsah v súbore ostal nezmenený. Commit má obsahovať iba druhý súbor.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git add .
+git status
+git restore --staged README.md
+git status
+git commit -m "Commit only selected file"</code></pre>
+              <p>Starší zápis je:</p>
+              <pre><code>git reset -- README.md</code></pre>
+              <p>Týmto sa súbor vyberie zo staging area, ale zmena vo working directory ostane.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>10. Vrátenie commitu cez revert</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">revert</span></p>
+          <p>Vytvorte súbor <code>omyl.txt</code>, commitnite ho a potom tento commit vráťte cez <code>git revert</code>. História sa nemá prepísať, má pribudnúť nový commit.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git add omyl.txt
+git commit -m "Add file by mistake"
+git log --oneline
+git revert &lt;hash-commitu&gt;
+git log --oneline</code></pre>
+              <p>V histórii má ostať pôvodný commit aj nový revert commit. To je vhodné najmä pri zmene, ktorá už mohla byť pushnutá alebo zdieľaná.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+    </section>
+
+    <section class="day" id="den-2">
+      <div class="day-head">
+        <h2>Deň 2 - slidy 45 až 88</h2>
+        <p>Branches, merge, conflicts, remote repository, clone, push, fetch, pull, stash, tag a rebase.</p>
+      </div>
+
+      <article class="task">
+        <h3>1. Vytvorenie branchu</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">branch</span></p>
+          <p>V repository z prvého dňa vytvorte branch <code>feature/profil</code>. Na tomto branchi vytvorte súbor <code>profil.txt</code>, commitnite ho a potom sa prepnite späť na hlavný branch.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git branch
+git checkout -b feature/profil</code></pre>
+              <p>Vytvorte <code>profil.txt</code>, potom:</p>
+              <pre><code>git add profil.txt
+git commit -m "Add profile"
+git checkout main
+git log --oneline --graph --all</code></pre>
+              <p>Ak sa hlavný branch volá <code>master</code>, použite <code>git checkout master</code>.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>2. Merge bez conflictu</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">merge</span></p>
+          <p>Spravte merge branchu <code>feature/profil</code> do hlavného branchu. Potom si pozrite históriu v grafickom výpise.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git checkout main
+git merge feature/profil
+git log --oneline --graph --all</code></pre>
+              <p>Ak hlavný branch nemal nové commity, Git môže spraviť fast-forward merge. Výsledok je, že zmeny z feature branchu sú už aj na hlavnom branchi.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>3. Vytvorenie merge conflictu</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">conflict</span></p>
+          <p>Vytvorte situáciu, v ktorej sa rovnaký riadok rovnakého súboru zmení inak v dvoch branchoch. Potom skúste merge.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git checkout main
+echo "farba: modra" &gt; menu.txt
+git add menu.txt
+git commit -m "Add menu"
+
+git checkout -b feature/menu
+echo "farba: zelena" &gt; menu.txt
+git add menu.txt
+git commit -m "Change menu color in feature"
+
+git checkout main
+echo "farba: cervena" &gt; menu.txt
+git add menu.txt
+git commit -m "Change menu color in main"
+
+git merge feature/menu</code></pre>
+              <p>Git má zahlásiť conflict v súbore <code>menu.txt</code>.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>4. Vyriešenie merge conflictu</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">conflict markers</span></p>
+          <p>Otvorte súbor s conflictom, vyberte finálnu verziu riadku, odstráňte conflict markers a dokončite merge.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <p>V súbore <code>menu.txt</code> odstráňte riadky s <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> a <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>. Nechajte iba výsledný obsah, napríklad:</p>
+              <pre><code>farba: cervena a zelena</code></pre>
+              <p>Potom:</p>
+              <pre><code>git status
+git add menu.txt
+git commit
+git status
+git log --oneline --graph --all</code></pre>
+              <p><code>git add</code> tu znamená, že súbor je vyriešený a pripravený na dokončenie merge.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>5. Mazanie branchov</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">git branch -d</span></p>
+          <p>Zobrazte si lokálne branches. Vymažte branch, ktorý už bol merged. Potom vytvorte nový branch s jedným commitom a skúste ho zmazať bezpečným spôsobom cez <code>-d</code>.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git branch
+git branch -d feature/profil
+
+git checkout -b experiment
+echo "pokus" &gt; experiment.txt
+git add experiment.txt
+git commit -m "Add experiment"
+git checkout main
+git branch -d experiment</code></pre>
+              <p>Git by mal odmietnuť zmazať branch <code>experiment</code>, ak ešte nebol merged. Nútený variant je <code>git branch -D experiment</code>, ale ten použite iba vtedy, keď naozaj chcete zahodiť daný branch.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>6. Clone remote repository</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">clone</span></p>
+          <p>V GitLabe alebo inom Git serveri vytvorte prázdne remote repository. Spravte clone, skontrolujte remote alias a pushnite prvý commit.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git clone &lt;url&gt;
+cd &lt;nazov-repository&gt;
+git remote -v</code></pre>
+              <p>Vytvorte <code>README.md</code>, potom:</p>
+              <pre><code>git add README.md
+git commit -m "Add README"
+git push</code></pre>
+              <p>Ak Git pýta upstream branch:</p>
+              <pre><code>git push -u origin main</code></pre>
+              <p>Ak sa branch volá <code>master</code>, použite <code>master</code>.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>7. Rozdiel medzi fetch a pull</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">fetch / pull</span></p>
+          <p>Urobte zmenu v remote repository cez webové rozhranie alebo z druhého clone. V pôvodnom clone najprv použite <code>git fetch</code>, pozrite históriu a až potom použite <code>git pull</code>.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git fetch
+git log --oneline --graph --all
+git status
+git pull
+git log --oneline --graph --all</code></pre>
+              <p><code>fetch</code> stiahne nové informácie z remote repository, ale nemení aktuálny working directory. <code>pull</code> spraví fetch a potom zmeny zapracuje do aktuálneho branchu.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>8. Odmietnutý push a následný pull</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">push / pull</span></p>
+          <p>Simulujte situáciu, že remote repository už obsahuje commit, ktorý lokálne ešte nemáte. Potom skúste pushnúť vlastný commit a vyriešte situáciu cez pull.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <p>Postup môže byť takýto:</p>
+              <ol>
+                <li>V remote repository upravte súbor cez web a commitnite zmenu.</li>
+                <li>Lokálne upravte iný riadok alebo iný súbor.</li>
+                <li>Lokálne spravte commit.</li>
+                <li>Skúste <code>git push</code>.</li>
+              </ol>
+              <pre><code>git add .
+git commit -m "Local change"
+git push
+git pull
+git push</code></pre>
+              <p>Prvý push môže zlyhať, pretože remote branch je ďalej. Po <code>git pull</code> sa remote zmeny zapracujú lokálne a ďalší push môže prejsť.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>9. Dočasné odloženie práce cez stash</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20 min</span><span class="pill">stash</span></p>
+          <p>Upravte súbor, ale necommitujte ho. Odložte rozpracovanú zmenu cez <code>git stash</code>, prepnite branch a potom sa vráťte späť k odloženej zmene.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git status
+git stash
+git status
+git stash list
+git checkout main
+git checkout &lt;povodny-branch&gt;
+git stash pop
+git status</code></pre>
+              <p><code>stash</code> je dočasné odloženie rozpracovaných zmien. Nie je to náhrada za normálny commit.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="task">
+        <h3>10. Tag a jednoduchý rebase</h3>
+        <div class="task-body">
+          <p class="meta"><span class="pill">cca 20-30 min</span><span class="pill">tag / rebase</span></p>
+          <p>Označte aktuálny commit tagom <code>v1.0.0</code>. Potom vytvorte branch s dvoma commitmi, na hlavnom branchi spravte ďalší commit a skúste feature branch presunúť cez <code>rebase</code>.</p>
+          <details>
+            <summary>Riešenie</summary>
+            <div class="solution">
+              <pre><code>git tag v1.0.0
+git tag
+
+git checkout -b feature/rebase-demo</code></pre>
+              <p>Spravte dva malé commity na <code>feature/rebase-demo</code>. Potom:</p>
+              <pre><code>git checkout main</code></pre>
+              <p>Spravte jeden commit na <code>main</code>. Potom:</p>
+              <pre><code>git checkout feature/rebase-demo
+git rebase main
+git log --oneline --graph --all --decorate</code></pre>
+              <p>Rebase prepíše lokálnu históriu feature branchu tak, že jeho commity položí na nový základ. Nerobte rebase zdieľanej histórie, ktorú už používajú iní ľudia.</p>
+            </div>
+          </details>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Súbor je určený na zdieľanie s účastníkmi. Riešenia sú predvolene skryté a dajú sa otvoriť jednotlivo alebo tlačidlami hore.</div>
+  </footer>
+
+  <script>
+    const allDetails = () => Array.from(document.querySelectorAll("details"));
+
+    document.getElementById("show-solutions").addEventListener("click", () => {
+      allDetails().forEach((item) => {
+        item.open = true;
+      });
+    });
+
+    document.getElementById("hide-solutions").addEventListener("click", () => {
+      allDetails().forEach((item) => {
+        item.open = false;
+      });
+    });
+  </script>
+</body>
+</html>
