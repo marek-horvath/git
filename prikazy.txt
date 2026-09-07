@@ -1,0 +1,43 @@
+LABY
+-----------
+1. https://docs.google.com/document/d/1wYdyXlDaZp5dxQsjYPekAp0oWlS-0M5kZOmnHdtCmhg/edit?tab=t.0
+2. https://github.com/marek-horvath/git
+
+PREZENTACIA
+-----------
+https://docs.google.com/presentation/d/19eKB1li-AfdSF1fi6XH87tzzdozuX62jY8sfUSzZBB0/edit?usp=sharing
+
+PRIKAZY
+-----------
+git status
+git add .
+git rm
+git commit -m "feat: message"
+git revert HEAD
+git init
+git config --global user.name "Marek"
+git config --global user.email "marek@tuke.sk"
+git config --list
+git diff
+git log
+git show
+git mv source destination
+git clone 
+git push
+
+pwd 
+ls -a 
+cd ..
+
+.git
+.gitignore
+
+Navod na ssh
+-----------
+https://kurzy.kpi.fei.tuke.sk/zap/tutorials/version-control.html
+ssh-keygen
+cat id...
+
+workingtree
+staging
+repository
