@@ -41,3 +41,11 @@ cat id...
 workingtree
 staging
 repository
+
+resolving na github riesia prikazy v gitbashi:
+export HTTP_PROXY = 
+http://sia.telekom.de:8080/
+
+export HTTPS_PROXY = 
+http://sia.telekom.de:8080/
+
