@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git deň 2 - praktické úlohy</title>
+  <style>
+    :root {
+      --text: #172033;
+      --muted: #5c6675;
+      --line: #d7dde7;
+      --soft: #f7f9fc;
+      --accent: #1f6feb;
+      --solution-bg: #eef7f3;
+      --solution-line: #0f766e;
+      --code-bg: #101827;
+      --code-text: #edf2f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .top {
+      padding: 28px 0 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 860px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 0 18px;
+    }
+
+    .bar a,
+    .bar button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      background: #ffffff;
+      text-decoration: none;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .bar button {
+      color: #ffffff;
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    main {
+      padding: 26px 0 48px;
+    }
+
+    .scenario {
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .task {
+      margin: 0 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .task h3 {
+      margin: 0;
+      padding: 14px 16px;
+      font-size: 20px;
+      line-height: 1.3;
+      letter-spacing: 0;
+      background: var(--soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .task-body {
+      padding: 14px 16px 16px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--soft);
+      white-space: nowrap;
+    }
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    ol,
+    ul {
+      margin: 0 0 10px;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 0 0 6px;
+    }
+
+    code {
+      padding: 1px 4px;
+      border: 1px solid #dbe3ee;
+      border-radius: 4px;
+      color: #0f172a;
+      background: #eef2f7;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      margin: 8px 0 0;
+      padding: 11px;
+      overflow-x: auto;
+      color: var(--code-text);
+      background: var(--code-bg);
+      border-radius: 6px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    pre code {
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+    }
+
+    details {
+      margin-top: 12px;
+      border: 1px solid #bbded2;
+      border-left: 5px solid var(--solution-line);
+      border-radius: 7px;
+      background: var(--solution-bg);
+    }
+
+    summary {
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .solution {
+      padding: 0 12px 12px;
+    }
+
+    footer {
+      padding: 18px 0 28px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    @media print {
+      .bar button {
+        display: none;
+      }
+
+      .task {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap top">
+      <h1>Git deň 2 - praktické úlohy</h1>
+      <p class="lead">Úlohy nadväzujú na stav po prvom dni: každý má vlastné GitHub repository, SSH kľúč, lokálny clone a v ňom tvoje HTML úlohy. Riešenia sú skryté pod zadaniami.</p>
+    </div>
+    <div class="wrap bar">
+      <a href="#ulohy">Úlohy</a>
+      <button type="button" id="show-solutions">Odkryť riešenia</button>
+      <button type="button" id="hide-solutions">Skryť riešenia</button>
+    </div>
+  </header>
+
+  <main class="wrap" id="ulohy">
+    <section class="scenario">
+      <h2>Spoločný príbeh</h2>
+      <p>Pracujete na malom repository pre školenie: máte v ňom HTML úlohy a postupne z neho spravíte jednoduchý „Git workshop kit“. Budete pridávať program dňa, checklist, changelog, release notes, feature branches, conflicts, remote zmeny, tag a rebase.</p>
+      <p>Prikazy su pisane pre Git Bash. V rieseniach pouzivam branch <code>main</code>. Ak ma niekto <code>master</code>, nahradi v prikazoch <code>main</code> za <code>master</code>.</p>
+    </section>
+
+    <article class="task">
+      <h3>1. Priprav repository na deň 2</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">20 min</span><span class="pill">status / pull / čistý štart</span></p>
+        <p>Otvor svoj lokálny clone z prvého dňa. Over, že si napojený na GitHub cez <code>origin</code>, stiahni posledný stav a priprav priečinok <code>den2</code> so súborom <code>README.md</code>.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>pwd
+ls -a
+git status
+git remote -v
+
+git checkout main
+echo main
+
+git pull origin main
+
+mkdir -p den2
+echo "# Den 2" &gt; den2/README.md
+echo "" &gt;&gt; den2/README.md
+echo "Tu budu materialy a zmeny z druheho dna." &gt;&gt; den2/README.md
+
+git status
+git add den2/README.md
+git commit -m "feat: prepare day 2 workspace"
+git push origin main</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>2. Nový feature branch pre program školenia</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">25 min</span><span class="pill">branch / commit / push</span></p>
+        <p>Vytvor branch <code>feature/day2-program</code>. Na branchi pridaj súbor <code>den2/program.md</code> s krátkym programom druhého dňa a pushni branch na GitHub.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git checkout -b feature/day2-program
+
+echo "# Program dna 2" &gt; den2/program.md
+echo "" &gt;&gt; den2/program.md
+echo "- Branches" &gt;&gt; den2/program.md
+echo "- Merge" &gt;&gt; den2/program.md
+echo "- Merge conflict" &gt;&gt; den2/program.md
+echo "- Remote repository" &gt;&gt; den2/program.md
+echo "- Stash" &gt;&gt; den2/program.md
+echo "- Tag" &gt;&gt; den2/program.md
+echo "- Rebase" &gt;&gt; den2/program.md
+
+git status
+git add den2/program.md
+git commit -m "feat: add day 2 program"
+git push -u origin feature/day2-program
+
+git log --oneline --graph --all --decorate --max-count=12</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>3. Prepínanie medzi branches bez chaosu</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">20 min</span><span class="pill">checkout / branch</span></p>
+        <p>Ukáž, že súbor vytvorený na feature branchi nie je automaticky na hlavnom branchi. Prejdi z feature branchu na hlavný branch a späť. Sleduj, ako sa mení obsah working tree.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git branch
+ls den2
+
+git checkout main
+ls den2
+git log --oneline --graph --all --decorate --max-count=12
+
+git checkout feature/day2-program
+ls den2
+cat den2/program.md
+
+git checkout main</code></pre>
+            <p>Ak bol branch už merged, súbor môže byť viditeľný aj na hlavnom branchi. Vtedy pointa nie je zmiznutie súboru, ale to, že <code>checkout</code> prepína stav working tree podľa branchu.</p>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>4. Merge feature branchu do hlavného branchu</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">20 min</span><span class="pill">merge</span></p>
+        <p>Predstav si, že program dňa 2 je hotový. Mergni <code>feature/day2-program</code> do hlavného branchu, pošli výsledok na GitHub a lokálny feature branch uprac.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git checkout main
+git merge feature/day2-program --no-edit
+
+git log --oneline --graph --all --decorate --max-count=15
+git status
+
+git push origin main
+git branch -d feature/day2-program</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>5. Zámerný merge conflict v programe</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">30 min</span><span class="pill">merge conflict</span></p>
+        <p>Vytvor conflict v súbore <code>den2/program.md</code>. Na feature branchi zmeň riadok so stashom na jednu verziu. Na hlavnom branchi zmeň ten istý riadok na inú verziu. Potom skús merge.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git checkout main
+
+git checkout -b feature/program-conflict
+# otvor den2/program.md a riadok "- Stash" prepis na "- Stash pre rozrobenu pracu"
+git diff
+git add den2/program.md
+git commit -m "feat: describe stash in feature"
+
+git checkout main
+# otvor den2/program.md a riadok "- Stash" prepis na "- Stash pocas hotfixu"
+git diff
+git add den2/program.md
+git commit -m "feat: describe stash in main"
+
+git merge feature/program-conflict</code></pre>
+            <p>Merge má skončiť conflictom.</p>
+            <pre><code>git status
+cat den2/program.md</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>6. Vyrieš conflict a dokonči merge</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">25 min</span><span class="pill">conflict markers / add / commit</span></p>
+        <p>V súbore <code>den2/program.md</code> odstráň conflict markers a nechaj finálnu verziu riadku tak, aby dávala zmysel pre školenie.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <p>Riadok môže vyzerať napríklad takto:</p>
+            <pre><code>- Stash pre rozrobenu pracu pocas hotfixu</code></pre>
+            <p>Potom dokonči merge:</p>
+            <pre><code>git status
+git add den2/program.md
+git commit -m "merge: resolve program stash conflict"
+
+git log --oneline --graph --all --decorate --max-count=18
+git branch -d feature/program-conflict
+git push origin main</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>7. Stash počas rozrobenej práce</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">25 min</span><span class="pill">stash / hotfix</span></p>
+        <p>Začni upravovať <code>den2/program.md</code>, ale necommituj. Potom si predstav, že musíš rýchlo spraviť hotfix v inom súbore. Odlož rozrobenú prácu cez <code>stash</code>, sprav hotfix a potom sa k práci vráť.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>echo "" &gt;&gt; den2/program.md
+echo "Poznamka: po rebase si pozrieme graf historie." &gt;&gt; den2/program.md
+git status
+git diff
+
+git stash push -m "WIP program notes"
+git status
+git stash list
+
+git checkout -b hotfix/readme-typo
+echo "" &gt;&gt; den2/README.md
+echo "Hotfix: doplnene po prvom dni." &gt;&gt; den2/README.md
+git add den2/README.md
+git commit -m "fix: update day 2 readme"
+
+git checkout main
+git merge hotfix/readme-typo --no-edit
+git branch -d hotfix/readme-typo
+
+git stash pop
+git diff
+git add den2/program.md
+git commit -m "feat: add rebase note to program"
+git push origin main</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>8. Druhý clone ako simulácia kolegu</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">30 min</span><span class="pill">clone / fetch / pull</span></p>
+        <p>Vytvor druhý clone svojho GitHub repository do vedľajšieho priečinka. Bude sa správať ako kolega alebo druhý počítač. V druhom clone urob commit a push. V pôvodnom clone použi najprv <code>fetch</code>, potom <code>pull</code>.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>pwd
+git remote -v
+
+cd ..
+git clone git@github.com:tvoje-meno/tvoje-repo.git kolega-copy
+
+cd kolega-copy
+echo "Toto pridal druhy clone." &gt; den2/kolega.md
+git add den2/kolega.md
+git commit -m "feat: add colleague note"
+git push origin main
+
+cd ..
+cd povodny-clone
+git fetch origin
+git log --oneline --graph --all --decorate --max-count=20
+git pull origin main
+ls den2</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>9. Odmietnutý push, lebo remote je ďalej</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">30 min</span><span class="pill">push rejected / pull</span></p>
+        <p>V druhom clone pushni jednu zmenu. V pôvodnom clone bez pullu sprav inú zmenu a skús <code>push</code>. Potom situáciu vyrieš cez <code>pull --no-rebase</code> a znovu <code>push</code>.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>cd ..
+cd kolega-copy
+echo "Remote zmena pred mojim pushom." &gt; den2/remote-first.md
+git add den2/remote-first.md
+git commit -m "feat: add remote first note"
+git push origin main
+
+cd ..
+cd povodny-clone
+echo "Lokalna zmena bez pullu." &gt; den2/local-after-remote.md
+git add den2/local-after-remote.md
+git commit -m "feat: add local note after remote changed"
+
+git push origin main
+git pull --no-rebase origin main
+git push origin main
+
+git log --oneline --graph --all --decorate --max-count=25</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>10. Remote branch vytvorený v druhom clone</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">30 min</span><span class="pill">remote branch / upstream</span></p>
+        <p>V druhom clone vytvor branch <code>feature/remote-checklist</code>, pridaj checklist a pushni branch. V pôvodnom clone si branch stiahni, pozri ho, mergni do hlavného branchu a remote branch vymaž.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>cd ..
+cd kolega-copy
+git pull origin main
+git checkout -b feature/remote-checklist
+
+echo "# Checklist" &gt; den2/checklist.md
+echo "" &gt;&gt; den2/checklist.md
+echo "- status" &gt;&gt; den2/checklist.md
+echo "- diff" &gt;&gt; den2/checklist.md
+echo "- commit" &gt;&gt; den2/checklist.md
+echo "- push" &gt;&gt; den2/checklist.md
+echo "- pull" &gt;&gt; den2/checklist.md
+git add den2/checklist.md
+git commit -m "feat: add remote checklist"
+git push -u origin feature/remote-checklist
+
+cd ..
+cd povodny-clone
+git fetch origin
+git branch -a
+git checkout feature/remote-checklist
+cat den2/checklist.md
+
+git checkout main
+git merge feature/remote-checklist --no-edit
+git push origin main
+
+git push origin --delete feature/remote-checklist
+git branch -d feature/remote-checklist</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>11. Tag release verzie školenia</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">20 min</span><span class="pill">tag</span></p>
+        <p>Predstav si, že aktuálny stav je hotová verzia materiálov po druhom dni. Vytvor jednoduchý tag aj annotated tag a pushni ich na GitHub.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git checkout main
+git pull origin main
+
+git tag den2-v1
+git tag
+git show den2-v1 --stat
+
+git tag -a den2-v1-notes -m "Den 2 hotovy workshop kit"
+git show den2-v1-notes --stat
+
+git push origin den2-v1
+git push origin den2-v1-notes</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>12. Rebase lokálneho feature branchu</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">35 min</span><span class="pill">rebase</span></p>
+        <p>Vytvor lokálny branch <code>feature/rebase-cleanup</code>, sprav na ňom dva commity. Potom sa vráť na hlavný branch, pridaj tam nový commit a feature branch prelož cez <code>rebase</code> na nový základ. Branch pred rebase nepushuj.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git checkout main
+git pull origin main
+
+git checkout -b feature/rebase-cleanup
+echo "rebase krok 1" &gt; den2/rebase-demo.md
+git add den2/rebase-demo.md
+git commit -m "feat: add rebase demo"
+
+echo "rebase krok 2" &gt;&gt; den2/rebase-demo.md
+git add den2/rebase-demo.md
+git commit -m "feat: extend rebase demo"
+
+git checkout main
+echo "Novy zaklad pre rebase." &gt; den2/base-after-feature.md
+git add den2/base-after-feature.md
+git commit -m "feat: add new base before rebase"
+
+git log --oneline --graph --all --decorate --max-count=25
+
+git checkout feature/rebase-cleanup
+git rebase main
+git log --oneline --graph --all --decorate --max-count=25
+
+git checkout main
+git merge feature/rebase-cleanup --ff-only
+git branch -d feature/rebase-cleanup
+git push origin main</code></pre>
+            <p>Rebase sa tu robí iba na lokálnom branchi, ktorý ešte nebol zdieľaný.</p>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>13. Detached HEAD a záchrana práce</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">30 min</span><span class="pill">detached HEAD</span></p>
+        <p>Choď na starší commit cez <code>HEAD~3</code>, sprav tam commit a zachráň ho vytvorením nového branchu. Potom ho mergni späť do hlavného branchu.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git checkout main
+git log --oneline --decorate --max-count=10
+
+git checkout HEAD~3
+git status
+
+echo "Toto vzniklo v detached HEAD." &gt; den2/detached-demo.md
+git add den2/detached-demo.md
+git commit -m "demo: commit in detached HEAD"
+
+git log --oneline --decorate --max-count=5
+git switch -c rescue/detached-demo
+
+git checkout main
+git merge rescue/detached-demo --no-edit
+git branch -d rescue/detached-demo
+git push origin main</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="task">
+      <h3>14. Záverečný changelog a release notes</h3>
+      <div class="task-body">
+        <p class="meta"><span class="pill">30 min</span><span class="pill">summary / log / show</span></p>
+        <p>Na konci vytvor <code>CHANGELOG.md</code> a <code>den2/release-notes.md</code>. Použi <code>git log</code> a <code>git show</code>, aby si vedel, čo sa počas dňa stalo. Potom všetko commitni a pushni.</p>
+        <details>
+          <summary>Riešenie</summary>
+          <div class="solution">
+            <pre><code>git checkout main
+git status
+git log --oneline --graph --all --decorate --max-count=30
+
+echo "# Changelog" &gt; CHANGELOG.md
+echo "" &gt;&gt; CHANGELOG.md
+echo "## Den 2" &gt;&gt; CHANGELOG.md
+echo "" &gt;&gt; CHANGELOG.md
+echo "- pridany program" &gt;&gt; CHANGELOG.md
+echo "- vyrieseny merge conflict" &gt;&gt; CHANGELOG.md
+echo "- vyskusany stash" &gt;&gt; CHANGELOG.md
+echo "- vyskusany remote workflow" &gt;&gt; CHANGELOG.md
+echo "- pridane tags" &gt;&gt; CHANGELOG.md
+echo "- vyskusany rebase" &gt;&gt; CHANGELOG.md
+
+echo "# Release notes" &gt; den2/release-notes.md
+echo "" &gt;&gt; den2/release-notes.md
+echo "Materialy po druhom dni su pripravene ako demo Git workflow." &gt;&gt; den2/release-notes.md
+
+git diff
+git add CHANGELOG.md den2/release-notes.md
+git diff --staged
+git commit -m "docs: add day 2 changelog and release notes"
+git push origin main
+
+git log --oneline --graph --all --decorate --max-count=30
+git show HEAD --stat</code></pre>
+          </div>
+        </details>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap">Úlohy sú postavené tak, aby účastníci používali svoje reálne GitHub repository a zároveň si nič kritické nepokazili. Každé riešenie je skryté v rozbaľovacom bloku.</div>
+  </footer>
+
+  <script>
+    const allDetails = () => Array.from(document.querySelectorAll("details"));
+
+    document.getElementById("show-solutions").addEventListener("click", () => {
+      allDetails().forEach((item) => {
+        item.open = true;
+      });
+    });
+
+    document.getElementById("hide-solutions").addEventListener("click", () => {
+      allDetails().forEach((item) => {
+        item.open = false;
+      });
+    });
+  </script>
+</body>
+</html>
