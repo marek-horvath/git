@@ -49,3 +49,41 @@ http://sia.telekom.de:8080/
 export HTTPS_PROXY = 
 http://sia.telekom.de:8080/
 
+-----------
+-----------
+
+DEN 2
+-----------
+git checkout -b nazov
+git switch
+git merge branch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
