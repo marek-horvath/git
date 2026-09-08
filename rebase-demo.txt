@@ -1,2 +1,0 @@
-rebase krok 1
-rebase krok 2
