@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git checklist</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #657083;
+      --line: #d9dee7;
+      --blue: #1f6feb;
+      --green: #168a5b;
+      --orange: #b85c00;
+      --red: #c24141;
+      --code-bg: #111827;
+      --code-text: #f4f7fb;
+      --shadow: 0 10px 26px rgba(22, 32, 51, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr);
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px;
+      border-right: 1px solid var(--line);
+      background: #ffffff;
+      overflow: auto;
+    }
+
+    main {
+      min-width: 0;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 31px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .progress-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    .progress-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .percent {
+      font-size: 44px;
+      line-height: 1;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .done-text {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: #e5e9f0;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--blue), var(--orange));
+      transition: width 180ms ease;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mini-stat {
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .search {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      background: #ffffff;
+    }
+
+    .filters,
+    .actions {
+      display: grid;
+      gap: 8px;
+    }
+
+    .filters {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .filter {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .filter.active {
+      color: #ffffff;
+      border-color: var(--blue);
+      background: var(--blue);
+      font-weight: 700;
+    }
+
+    .action {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .action.primary {
+      color: #ffffff;
+      border-color: var(--green);
+      background: var(--green);
+      font-weight: 700;
+    }
+
+    .action.danger {
+      color: var(--red);
+      border-color: #efb5b5;
+      background: #fff7f7;
+    }
+
+    .content {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .toolbar h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .group {
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .group-header h3 {
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: 0;
+    }
+
+    .group-progress {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .items {
+      display: grid;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 34px minmax(170px, 260px) minmax(0, 1fr) 78px;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .item:last-child {
+      border-bottom: 0;
+    }
+
+    .item.done {
+      background: #f4fbf7;
+    }
+
+    .check {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+
+    code {
+      display: inline-block;
+      max-width: 100%;
+      padding: 5px 7px;
+      border-radius: 5px;
+      color: var(--code-text);
+      background: var(--code-bg);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .desc {
+      min-width: 0;
+      color: #243044;
+      font-size: 15px;
+    }
+
+    .tag {
+      justify-self: end;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: #f7f9fc;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .tag.day2 {
+      color: var(--orange);
+      border-color: #efc99d;
+      background: #fff8ef;
+    }
+
+    .empty {
+      padding: 28px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: #ffffff;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .shell {
+        display: block;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      main {
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      .toolbar,
+      .group-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .item {
+        grid-template-columns: 30px minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .item code,
+      .item .desc,
+      .item .tag {
+        grid-column: 2;
+      }
+
+      .tag {
+        justify-self: start;
+      }
+    }
+
+    @media print {
+      aside {
+        position: static;
+        height: auto;
+      }
+
+      .shell {
+        display: block;
+      }
+
+      .controls,
+      .actions,
+      .filters,
+      .search {
+        display: none;
+      }
+
+      .group {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <h1>Git checklist</h1>
+      <p class="lead">Odklikavaj si prikazy, ktorym rozumies alebo ktore si uz realne vyskusal.</p>
+
+      <section class="progress-card" aria-label="Progress">
+        <div class="progress-top">
+          <div class="percent" id="percent">0%</div>
+          <div class="done-text" id="done-text">0 z 0 hotovo</div>
+        </div>
+        <div class="bar" aria-hidden="true">
+          <div class="bar-fill" id="bar-fill"></div>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <strong id="day1-stat">0%</strong>
+            <span>Den 1</span>
+          </div>
+          <div class="mini-stat">
+            <strong id="day2-stat">0%</strong>
+            <span>Den 2</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="controls">
+        <input class="search" id="search" type="search" placeholder="Hladat prikaz alebo temu">
+
+        <div class="filters" aria-label="Filter">
+          <button class="filter active" type="button" data-filter="all">Vsetko</button>
+          <button class="filter" type="button" data-filter="day1">Den 1</button>
+          <button class="filter" type="button" data-filter="day2">Den 2</button>
+          <button class="filter" type="button" data-filter="open">Neviem este</button>
+        </div>
+
+        <div class="actions">
+          <button class="action primary" type="button" id="mark-visible">Oznacit zobrazene</button>
+          <button class="action" type="button" id="unmark-visible">Zrusit zobrazene</button>
+          <button class="action danger" type="button" id="reset">Reset celeho checklistu</button>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="content">
+        <div class="toolbar">
+          <h2 id="view-title">Vsetky prikazy</h2>
+          <div class="count" id="visible-count">0 prikazov</div>
+        </div>
+        <div id="list"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const commands = [
+      { id: "pwd", day: "day1", group: "Terminal", command: "pwd", desc: "Ukaze, v ktorom priecinku sa prave nachadzas." },
+      { id: "ls", day: "day1", group: "Terminal", command: "ls", desc: "Vypise subory a priecinky v aktualnom priecinku." },
+      { id: "ls-a", day: "day1", group: "Terminal", command: "ls -a", desc: "Vypise aj skryte veci, napriklad .git." },
+      { id: "cd-dir", day: "day1", group: "Terminal", command: "cd nazov-priecinka", desc: "Prejde do konkretneho priecinka." },
+      { id: "cd-up", day: "day1", group: "Terminal", command: "cd ..", desc: "Prejde o jeden priecinok vyssie." },
+      { id: "mkdir", day: "day1", group: "Terminal", command: "mkdir nazov", desc: "Vytvori novy priecinok." },
+      { id: "cat", day: "day1", group: "Terminal", command: "cat subor.txt", desc: "Vypise obsah suboru priamo do terminala." },
+      { id: "echo-write", day: "day1", group: "Terminal", command: "echo \"text\" > subor.txt", desc: "Vytvori alebo prepise subor jednym riadkom textu." },
+      { id: "echo-append", day: "day1", group: "Terminal", command: "echo \"text\" >> subor.txt", desc: "Prida text na koniec existujuceho suboru." },
+
+      { id: "git-version", day: "day1", group: "Setup", command: "git --version", desc: "Overi, ci je Git nainstalovany." },
+      { id: "config-name", day: "day1", group: "Setup", command: "git config --global user.name \"Meno Priezvisko\"", desc: "Nastavi meno autora commitov na tomto pocitaci." },
+      { id: "config-email", day: "day1", group: "Setup", command: "git config --global user.email \"meno@example.com\"", desc: "Nastavi email autora commitov na tomto pocitaci." },
+      { id: "config-list", day: "day1", group: "Setup", command: "git config --list", desc: "Vypise aktualne Git nastavenia." },
+      { id: "ssh-keygen", day: "day1", group: "Setup", command: "ssh-keygen", desc: "Vytvori SSH kluc, ktory sa potom prida na GitHub." },
+      { id: "cat-ssh", day: "day1", group: "Setup", command: "cat ~/.ssh/id_ed25519.pub", desc: "Vypise public SSH kluc, ktory kopirujes na GitHub." },
+
+      { id: "git-init", day: "day1", group: "Repository", command: "git init", desc: "Vytvori nove lokalne Git repository v aktualnom priecinku." },
+      { id: "branch-main", day: "day1", group: "Repository", command: "git branch -M main", desc: "Premenuje aktualny branch na main." },
+      { id: "git-clone", day: "day1", group: "Repository", command: "git clone git@github.com:meno/repo.git", desc: "Stiahne remote repository z GitHubu cez SSH." },
+      { id: "remote-v", day: "day1", group: "Repository", command: "git remote -v", desc: "Ukaze, na ake remote URL je repository napojene." },
+      { id: "remote-add", day: "day1", group: "Repository", command: "git remote add origin git@github.com:meno/repo.git", desc: "Prida remote repository pod nazvom origin." },
+
+      { id: "status", day: "day1", group: "Zakladny workflow", command: "git status", desc: "Ukaze aktualny branch a stav suborov." },
+      { id: "diff", day: "day1", group: "Zakladny workflow", command: "git diff", desc: "Ukaze zmeny, ktore este nie su v staging area." },
+      { id: "add-file", day: "day1", group: "Zakladny workflow", command: "git add subor.txt", desc: "Prida konkretny subor do staging area." },
+      { id: "add-all", day: "day1", group: "Zakladny workflow", command: "git add .", desc: "Prida vsetky aktualne zmeny do staging area." },
+      { id: "diff-staged", day: "day1", group: "Zakladny workflow", command: "git diff --staged", desc: "Ukaze zmeny pripravene na commit." },
+      { id: "diff-head", day: "day1", group: "Zakladny workflow", command: "git diff HEAD", desc: "Ukaze vsetky zmeny oproti poslednemu commitu." },
+      { id: "commit", day: "day1", group: "Zakladny workflow", command: "git commit -m \"feat: sprava\"", desc: "Vytvori commit zo staged zmien." },
+      { id: "commit-file", day: "day1", group: "Zakladny workflow", command: "git commit subor.txt -m \"sprava\"", desc: "Commitne tracked subor bez samostatneho git add." },
+      { id: "push-main", day: "day1", group: "Zakladny workflow", command: "git push origin main", desc: "Posle lokalne commity z main na GitHub." },
+
+      { id: "log", day: "day1", group: "Historia", command: "git log", desc: "Zobrazi historiu commitov." },
+      { id: "log-oneline", day: "day1", group: "Historia", command: "git log --oneline", desc: "Zobrazi historiu commitov v kratkom formate." },
+      { id: "log-graph", day: "day2", group: "Historia", command: "git log --oneline --graph --all --decorate", desc: "Ukaze historiu ako graf aj s branches a tags." },
+      { id: "show-head", day: "day1", group: "Historia", command: "git show HEAD", desc: "Ukaze detail posledneho commitu." },
+      { id: "show-hash", day: "day1", group: "Historia", command: "git show <hash>", desc: "Ukaze detail konkretneho commitu." },
+      { id: "revert-head", day: "day1", group: "Historia", command: "git revert HEAD", desc: "Vytvori novy commit, ktory zrusi posledny commit." },
+
+      { id: "git-rm", day: "day1", group: "Subory", command: "git rm subor.txt", desc: "Vymaze subor a pripravi vymazanie do staging area." },
+      { id: "rm-cached", day: "day1", group: "Subory", command: "git rm --cached subor.txt", desc: "Prestane sledovat subor v Gite, ale necha ho na disku." },
+      { id: "git-mv", day: "day1", group: "Subory", command: "git mv povodny.txt novy.txt", desc: "Premenuje alebo presunie subor tak, aby to Git videl ako zmenu." },
+      { id: "restore", day: "day1", group: "Subory", command: "git restore subor.txt", desc: "Zahodi necommitnutu zmenu v danom subore." },
+      { id: "restore-staged", day: "day1", group: "Subory", command: "git restore --staged subor.txt", desc: "Vyberie subor zo staging area, ale zmenu necha v subore." },
+      { id: "reset-hard", day: "day1", group: "Subory", command: "git reset --hard", desc: "Zahodi vsetky necommitnute zmeny vo working tree aj staging area." },
+
+      { id: "branch", day: "day2", group: "Branches", command: "git branch", desc: "Vypise lokalne branches a oznaci aktualny branch." },
+      { id: "branch-a", day: "day2", group: "Branches", command: "git branch -a", desc: "Vypise lokalne aj remote branches." },
+      { id: "checkout-main", day: "day2", group: "Branches", command: "git checkout main", desc: "Prepne working tree na branch main." },
+      { id: "checkout-b", day: "day2", group: "Branches", command: "git checkout -b feature/nazov", desc: "Vytvori novy branch a rovno sa na neho prepne." },
+      { id: "switch-main", day: "day2", group: "Branches", command: "git switch main", desc: "Novsi sposob prepnutia na branch main." },
+      { id: "switch-c", day: "day2", group: "Branches", command: "git switch -c feature/nazov", desc: "Novsi sposob vytvorenia a prepnutia na novy branch." },
+      { id: "merge", day: "day2", group: "Branches", command: "git merge feature/nazov", desc: "Spoji zmeny z daneho branchu do aktualneho branchu." },
+      { id: "merge-no-edit", day: "day2", group: "Branches", command: "git merge feature/nazov --no-edit", desc: "Spravi merge a pouzije defaultnu merge spravu." },
+      { id: "branch-d", day: "day2", group: "Branches", command: "git branch -d feature/nazov", desc: "Vymaze lokalny branch, ktory uz bol merged." },
+      { id: "branch-D", day: "day2", group: "Branches", command: "git branch -D feature/nazov", desc: "Vynutene vymaze lokalny branch aj bez merge." },
+
+      { id: "conflict-merge", day: "day2", group: "Merge conflict", command: "git merge feature/konflikt", desc: "Spusti merge, ktory moze skoncit conflictom." },
+      { id: "conflict-status", day: "day2", group: "Merge conflict", command: "git status", desc: "Pri conflicte ukaze subory, ktore treba rucne vyriesit." },
+      { id: "conflict-add", day: "day2", group: "Merge conflict", command: "git add konflikt.txt", desc: "Oznaci subor ako vyrieseny po rucnej uprave." },
+      { id: "conflict-commit", day: "day2", group: "Merge conflict", command: "git commit -m \"merge: resolve conflict\"", desc: "Dokonci merge po vyrieseni conflictu." },
+
+      { id: "fetch", day: "day2", group: "Remote workflow", command: "git fetch origin", desc: "Stiahne informacie z GitHubu, ale este nemeni tvoje subory." },
+      { id: "pull", day: "day2", group: "Remote workflow", command: "git pull origin main", desc: "Stiahne zmeny z GitHubu a zapracuje ich do aktualneho branchu." },
+      { id: "pull-no-rebase", day: "day2", group: "Remote workflow", command: "git pull --no-rebase origin main", desc: "Stiahne remote zmeny a spoji ich cez merge commit." },
+      { id: "push-upstream", day: "day2", group: "Remote workflow", command: "git push -u origin feature/nazov", desc: "Pushne novy branch na GitHub a nastavi upstream." },
+      { id: "remote-delete", day: "day2", group: "Remote workflow", command: "git push origin --delete feature/nazov", desc: "Vymaze remote branch na GitHube." },
+
+      { id: "stash", day: "day2", group: "Stash", command: "git stash", desc: "Docasne odlozi rozrobene zmeny, aby bol working tree cisty." },
+      { id: "stash-push", day: "day2", group: "Stash", command: "git stash push -m \"WIP sprava\"", desc: "Odlozi zmeny do stashu aj s kratkym popisom." },
+      { id: "stash-list", day: "day2", group: "Stash", command: "git stash list", desc: "Ukaze ulozene stash zmeny." },
+      { id: "stash-pop", day: "day2", group: "Stash", command: "git stash pop", desc: "Vrati posledny stash naspat do working tree." },
+
+      { id: "tag", day: "day2", group: "Tags", command: "git tag v1.0.0", desc: "Vytvori jednoduchy tag na aktualnom commite." },
+      { id: "tag-list", day: "day2", group: "Tags", command: "git tag", desc: "Vypise vsetky lokalne tags." },
+      { id: "tag-annotated", day: "day2", group: "Tags", command: "git tag -a v1.0.1 -m \"Release v1.0.1\"", desc: "Vytvori annotated tag so spravou." },
+      { id: "tag-show", day: "day2", group: "Tags", command: "git show v1.0.0 --stat", desc: "Ukaze, na aky commit tag ukazuje." },
+      { id: "tag-push", day: "day2", group: "Tags", command: "git push origin v1.0.0", desc: "Pushne konkretny tag na GitHub." },
+
+      { id: "rebase", day: "day2", group: "Rebase", command: "git rebase main", desc: "Presunie commity aktualneho branchu na najnovsi main." },
+      { id: "ff-only", day: "day2", group: "Rebase", command: "git merge feature/nazov --ff-only", desc: "Po rebase prida branch do main bez merge commitu." },
+
+      { id: "checkout-hash", day: "day2", group: "Detached HEAD", command: "git checkout <hash>", desc: "Prepne repository na konkretny starsi commit." },
+      { id: "checkout-head3", day: "day2", group: "Detached HEAD", command: "git checkout HEAD~3", desc: "Prepne repository tri commity dozadu." },
+      { id: "rescue", day: "day2", group: "Detached HEAD", command: "git switch -c rescue/nazov", desc: "Vytvori branch na aktualnom mieste a zachrani pracu z detached HEAD." }
+    ];
+
+    const storageKey = "git-checklist-progress-v1";
+    const state = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    const list = document.getElementById("list");
+    const percentEl = document.getElementById("percent");
+    const doneText = document.getElementById("done-text");
+    const barFill = document.getElementById("bar-fill");
+    const day1Stat = document.getElementById("day1-stat");
+    const day2Stat = document.getElementById("day2-stat");
+    const visibleCount = document.getElementById("visible-count");
+    const viewTitle = document.getElementById("view-title");
+    const search = document.getElementById("search");
+    let activeFilter = "all";
+
+    function save() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+
+    function isDone(item) {
+      return state[item.id] === true;
+    }
+
+    function getVisibleItems() {
+      const query = search.value.trim().toLowerCase();
+      return commands.filter((item) => {
+        const matchesFilter =
+          activeFilter === "all" ||
+          item.day === activeFilter ||
+          (activeFilter === "open" && !isDone(item));
+        const haystack = `${item.command} ${item.desc} ${item.group}`.toLowerCase();
+        return matchesFilter && (!query || haystack.includes(query));
+      });
+    }
+
+    function percentFor(items) {
+      if (items.length === 0) return 0;
+      return Math.round((items.filter(isDone).length / items.length) * 100);
+    }
+
+    function updateStats() {
+      const done = commands.filter(isDone).length;
+      const percent = percentFor(commands);
+      percentEl.textContent = `${percent}%`;
+      doneText.textContent = `${done} z ${commands.length} hotovo`;
+      barFill.style.width = `${percent}%`;
+      day1Stat.textContent = `${percentFor(commands.filter((item) => item.day === "day1"))}%`;
+      day2Stat.textContent = `${percentFor(commands.filter((item) => item.day === "day2"))}%`;
+    }
+
+    function groupBy(items) {
+      return items.reduce((groups, item) => {
+        if (!groups.has(item.group)) groups.set(item.group, []);
+        groups.get(item.group).push(item);
+        return groups;
+      }, new Map());
+    }
+
+    function titleForFilter() {
+      if (activeFilter === "day1") return "Den 1";
+      if (activeFilter === "day2") return "Den 2";
+      if (activeFilter === "open") return "Este neodkliknute";
+      return "Vsetky prikazy";
+    }
+
+    function render() {
+      updateStats();
+      const items = getVisibleItems();
+      viewTitle.textContent = titleForFilter();
+      visibleCount.textContent = `${items.length} prikazov`;
+
+      if (items.length === 0) {
+        list.innerHTML = '<div class="empty">Nic sa nenaslo.</div>';
+        return;
+      }
+
+      list.innerHTML = "";
+      for (const [groupName, groupItems] of groupBy(items)) {
+        const group = document.createElement("section");
+        group.className = "group";
+
+        const header = document.createElement("div");
+        header.className = "group-header";
+        const title = document.createElement("h3");
+        title.textContent = groupName;
+        const progress = document.createElement("div");
+        progress.className = "group-progress";
+        progress.textContent = `${groupItems.filter(isDone).length} / ${groupItems.length}`;
+        header.append(title, progress);
+
+        const body = document.createElement("div");
+        body.className = "items";
+
+        for (const item of groupItems) {
+          const row = document.createElement("label");
+          row.className = `item${isDone(item) ? " done" : ""}`;
+          row.htmlFor = item.id;
+
+          const checkbox = document.createElement("input");
+          checkbox.className = "check";
+          checkbox.type = "checkbox";
+          checkbox.id = item.id;
+          checkbox.checked = isDone(item);
+          checkbox.addEventListener("change", () => {
+            state[item.id] = checkbox.checked;
+            save();
+            render();
+          });
+
+          const code = document.createElement("code");
+          code.textContent = item.command;
+
+          const desc = document.createElement("div");
+          desc.className = "desc";
+          desc.textContent = item.desc;
+
+          const tag = document.createElement("span");
+          tag.className = `tag ${item.day}`;
+          tag.textContent = item.day === "day1" ? "Den 1" : "Den 2";
+
+          row.append(checkbox, code, desc, tag);
+          body.append(row);
+        }
+
+        group.append(header, body);
+        list.append(group);
+      }
+    }
+
+    document.querySelectorAll(".filter").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        document.querySelectorAll(".filter").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        render();
+      });
+    });
+
+    search.addEventListener("input", render);
+
+    document.getElementById("mark-visible").addEventListener("click", () => {
+      getVisibleItems().forEach((item) => {
+        state[item.id] = true;
+      });
+      save();
+      render();
+    });
+
+    document.getElementById("unmark-visible").addEventListener("click", () => {
+      getVisibleItems().forEach((item) => {
+        state[item.id] = false;
+      });
+      save();
+      render();
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      if (!confirm("Naozaj zrusit cely checklist?")) return;
+      Object.keys(state).forEach((key) => {
+        delete state[key];
+      });
+      save();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
