@@ -58,6 +58,9 @@ git checkout -b nazov
 git switch
 git merge branch
 
+echo "# Den 2 demo" > day2-flow.md
+
+git log --oneline --graph --all --decorate --max-count=12
 
 
 
